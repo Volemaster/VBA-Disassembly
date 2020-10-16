@@ -1,0 +1,170 @@
+
+
+public type DataSegmentProjectPointer
+    Null1 as LongLong                          '   0x00
+    lpProjectEntry as LongPtr                  '   0x08
+    Ptr1 as LongPtr                            '   0x10
+    Null2 as LongLong                          '   0x18
+    Ptr2 as LongPtr                            '   0x20
+    Null3 as LongPtr                           '   0x28
+end type
+
+public type ProjectEntry
+    lpNextEntry as LongPtr                     '   0x00
+    lpPreviousEntry as LongPtr                 '   0x08
+    lpProjectInfo as LongPtr                   '   0x10
+    QWord1 as LongLong                         '   0x18
+    QWord2 as LongLong                         '   0x20
+end type
+
+public type ProjectInfo
+    ObjectInterfaces as LongPtr                '   0x00
+    QWord1 as LongLong                         '   0x08
+    lpD270 as LongPtr                          '   0x10    'Unknown
+    lpObjectTable as LongPtr                   '   0x18
+    FileNameDescriptor(3) as Byte              '   0x20
+    FileName(2045) as Byte                     '   0x23
+    QWord2 as longlong                         ' 0x0820
+    lpE288 as LongPtr                          ' 0x0828    'Unknown
+    lpPublicObjectDescriptors as LongPtr       ' 0x0830    'Pointer to array of PODs themselves, not an array of pointers.
+    ObjectCount as LongPtr                     ' 0x0838
+    ObjectInfo1Array as LongPtr                ' 0x0840
+    QWord3 as LongLong                         ' 0x0848
+end type
+
+public type ObjectTable
+    lpX1 as LongPtr                            '   0x00
+    lpProjectInfo as LongPtr                   '   0x08
+    lpSecondaryProjectInfo as LongPtr          '   0x10
+    Reserved as LongLong                       '   0x18
+    Null1 as LongLong                          '   0x20
+    lp6CC0 as LongPtr                          '   0x28
+    GUID as Guid                               '   0x30
+    CompiledState as Integer                   '   0x40
+    ObjectCount as Integer                     '   0x42
+    CompiledObjects as Integer                 '   0x44
+    ObjectsInUse as Integer                    '   0x46
+    lpPublicObjectDescriptors as LongPtr       '   0x48
+    ReferenceCount as LongLong                 '   0x50
+    lpReferenceTable as LongPtr                '   0x58
+    QWord1 as LongLong                         '   0x60
+    lpProjectName as LongPtr                   '   0x68    'Pointer to char[]
+    PrimaryLanguageCodeID as Long              '   0x70
+    SecondaryLangagueCodeID as Long            '   0x74
+    Ptr1 as LongPtr                            '   0x78
+    QWord2 as LongLong                         '   0x80
+    QWord3 as LongLong                         '   0x88
+    QWord4 as LongLong                         '   0x90
+    QWord5 as LongLong                         '   0x98
+    QWord6 as LongLong                         '   0xA0
+    QWord7 as LongLong                         '   0xA8
+    QWord8 as LongLong                         '   0xB0
+    QWord9 as LongLong                         '   0xB8
+end type
+
+public type SecondaryProjectInfo
+    lpPrivateObjectDescriptors as LongPtr      '   0x00
+    lpObjectTable as LongPtr                   '   0x08
+    QWord1 as LongLong                         '   0x10
+    QWord2 as LongLong                         '   0x18
+    lp8890 as LongPtr                          '   0x20
+    QWord3 as LongLong                         '   0x28
+    QWord4 as LongLong                         '   0x30
+    QWord5 as LongLong                         '   0x38
+    QWord6 as LongLong                         '   0x40
+    QWord7 as LongLong                         '   0x48
+end type
+
+public type InMemoryProjectData
+    DWord1 as Long                             '   0x00
+    DWord2 as Long                             '   0x04
+    QWord1 as LongLong                         '   0x08
+    Ptr1 as LongPtr                            '   0x10
+    Flag1 as LongLong                          '   0x18
+    Ptr2 as LongPtr                            '   0x20
+    Flag2 as LongLong                          '   0x28
+    Ptr3 as LongPtr                            '   0x30
+    Flag3 as LongLong                          '   0x38
+    Ptr4 as LongPtr                            '   0x40
+    Flag4 as LongLong                          '   0x48
+    Ptr5 as LongPtr                            '   0x50
+    Flag5 as LongLong                          '   0x58
+end type
+
+public type PublicObjectDescriptor
+    lpObjectInfo as LongPtr                    '   0x00
+    Reserved1 as LongLong                      '   0x08
+    lpPublicVariableIntegers as LongPtr        '   0x10
+    lpStaticVariableIntegers as LongPtr        '   0x18
+    lpDataPublicVariables as LongPtr           '   0x20
+    lpDataStaticVariables as LongPtr           '   0x28
+    lpModuleName as LongPtr                    '   0x30    'Pointer to char[]
+    MethodCount as LongLong                    '   0x38
+    lpMethodNamePtrArray as LongPtr            '   0x40    'Array of pointers to char[]
+    OffsetToStaticVariables as Long            '   0x48
+    Flags as Long                              '   0x4C
+    Null1 as Long                              '   0x50
+end type
+
+public type ObjectInfo
+    ReferenceCount as Integer                  '   0x00
+    ObjectIndex as Integer                     '   0x02
+    DWord1 as Long                             '   0x04
+    lpObjectTable as LongPtr                   '   0x08
+    Ptr1 as LongPtr                            '   0x10
+    Ptr2 as LongPtr                            '   0x18
+    QWord1 as LongLong                         '   0x20
+    QWord2 as LongLong                         '   0x28
+    lpPublicObjectDescriptor as LongPtr        '   0x30    'Points directly to the object descriptor itself
+    Ptr3 as LongPtr                            '   0x38
+    MethodCount  as Integer                    '   0x40        
+    MethodCount2 as Integer                    '   0x42    'Potentially unreliable?
+    DWord2 as Long                             '   0x44
+    lpMethodInfoPointers as LongPtr            '   0x48    'Array of pointers to MethodInfo structures
+    Word1 as Integer                           '   0x50    'Constants in constant pool?
+    Word2 as Integer                           '   0x52    'Constants to allocate in constant pool?
+    DWord3 as Long                             '   0x54
+    Ptr4 as LongPtr                            '   0x58
+    Ptr5 as LongPtr                            '   0x60
+    QWord3 as LongLong                         '   0x68
+    QWord4 as LongLong                         '   0x70
+    QWord5 as LongLong                         '   0x78
+    QWord6 as LongLong                         '   0x80
+    Ptr6 as LongPtr                            '   0x88
+end type
+
+public type PrivateObjectDescriptor
+    lpDED0 as LongPtr                          '   0x00
+    QWord1 as LongLong                         '   0x08
+    lpSecondaryProjectInfo as LongPtr          '   0x10
+    QWord2 as LongLong                         '   0x18
+end type
+
+public type MethodDescriptor    ' This is the structure that is passed from AddressOf calls.
+    Null1 as LongLong                          '   0x00
+    lpMethodInfo as LongPtr                    '   0x08
+end type
+
+public type MethodInfo
+    lpObjectInfo as LongPtr                    '   0x00
+    Unknown(0 to &H57) as Byte                 '   0x08
+    Ptr0x60 as LongPtr                         '   0x60
+end type
+
+                                               '   0x00
+                                               '   0x00
+                                               '   0x00
+                                               '   0x00
+                                               '   0x00
+                                               '   0x00
+                                               '   0x00
+                                               '   0x00
+                                               '   0x00
+                                               '   0x00
+                                               '   0x00
+                                               '   0x00
+                                               '   0x00
+                                               '   0x00
+                                               '   0x00
+                                               '   0x00
+                                               '   0x00

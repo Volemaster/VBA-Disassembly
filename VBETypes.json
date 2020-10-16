@@ -1,0 +1,1624 @@
+{
+	"types": [{
+			"name": "publicObjectDescriptor*",
+			"pointto": "publicObjectDescriptor",
+			"primitive": "ptr"
+		}, {
+			"name": "objectInfo*",
+			"pointto": "objectInfo",
+			"primitive": "ptr"
+		}, {
+			"name": "projectInfo*",
+			"pointto": "projectInfo",
+			"primitive": "ptr"
+		}, {
+			"name": "objectTable*",
+			"pointto": "objectTable",
+			"primitive": "ptr"
+		}, {
+			"name": "objectPointerArray*",
+			"pointto": "objectPointerArray",
+			"primitive": "ptr"
+		}, {
+			"name": "methodNameArray*",
+			"pointto": "methodNameArray",
+			"primitive": "ptr"
+		}, {
+			"name": "DD50*",
+			"pointto": "DD50",
+			"primitive": "ptr"
+		}, {
+			"name": "objectInfo1Array*",
+			"pointto": "objectInfo1Array",
+			"primitive": "ptr"
+		}, {
+			"name": "objectInfo1*",
+			"pointto": "objectInfo1",
+			"primitive": "ptr"
+		}, {
+			"name": "objectInfo2*",
+			"pointto": "objectInfo2",
+			"primitive": "ptr"
+		}, {
+			"name": "nativeCode*",
+			"pointto": "nativeCode",
+			"primitive": "ptr"
+		}, {
+			"name": "objectInfo3*",
+			"pointto": "objectInfo3",
+			"primitive": "ptr"
+		}, {
+			"name": "0x82A0*",
+			"pointto": "0x82A0",
+			"primitive": "ptr"
+		}, {
+			"name": "0xDDB0*",
+			"pointto": "0xDDB0",
+			"primitive": "ptr"
+		}, {
+			"name": "0xA1E0*",
+			"pointto": "0xA1E0",
+			"primitive": "ptr"
+		}, {
+			"name": "0x63D0*",
+			"pointto": "0x63D0",
+			"primitive": "ptr"
+		}, {
+			"name": "0x93A0*",
+			"pointto": "0x93A0",
+			"primitive": "ptr"
+		}, {
+			"name": "0x99A0*",
+			"pointto": "0x99A0",
+			"primitive": "ptr"
+		}, {
+			"name": "0x44E0*",
+			"pointto": "0x44E0",
+			"primitive": "ptr"
+		}, {
+			"name": "0x9E40*",
+			"pointto": "0x9E40",
+			"primitive": "ptr"
+		}, {
+			"name": "0xC620*",
+			"pointto": "0xC620",
+			"primitive": "ptr"
+		}, {
+			"name": "0x1C90*",
+			"pointto": "0x1C90",
+			"primitive": "ptr"
+		}, {
+			"name": "0x6D20*",
+			"pointto": "0x6D20",
+			"primitive": "ptr"
+		}, {
+			"name": "0x02E8*",
+			"pointto": "0x02E8",
+			"primitive": "ptr"
+		}, {
+			"name": "0x02B0*",
+			"pointto": "0x02B0",
+			"primitive": "ptr"
+		}, {
+			"name": "0x6D60*",
+			"pointto": "0x6D60",
+			"primitive": "ptr"
+		}, {
+			"name": "0x0730*",
+			"pointto": "0x0730",
+			"primitive": "ptr"
+		}, {
+			"name": "0x0AF0*",
+			"pointto": "0x0AF0",
+			"primitive": "ptr"
+		}, {
+			"name": "interfaces*",
+			"pointto": "interfaces",
+			"primitive": "ptr"
+		}, {
+			"name": "0x59E0*",
+			"pointto": "0x59E0",
+			"primitive": "ptr"
+		}, {
+			"name": "objectLinkedList*",
+			"pointto": "objectLinkedList",
+			"primitive": "ptr"
+		}, {
+			"name": "0x75D0*",
+			"pointto": "0x75D0",
+			"primitive": "ptr"
+		}, {
+			"name": "0x7970*",
+			"pointto": "0x7970",
+			"primitive": "ptr"
+		}, {
+			"name": "0x9FB0*",
+			"pointto": "0x9FB0",
+			"primitive": "ptr"
+		}, {
+			"name": "0x7670*",
+			"pointto": "0x7670",
+			"primitive": "ptr"
+		}, {
+			"name": "0x6A30*",
+			"pointto": "0x6A30",
+			"primitive": "ptr"
+		}, {
+			"name": "0x7850*",
+			"pointto": "0x7850",
+			"primitive": "ptr"
+		}, {
+			"name": "0x78D0*",
+			"pointto": "0x78D0",
+			"primitive": "ptr"
+		}, {
+			"name": "0x9C50*",
+			"pointto": "0x9C50",
+			"primitive": "ptr"
+		}, {
+			"name": "0x7B70*",
+			"pointto": "0x7B70",
+			"primitive": "ptr"
+		}, {
+			"name": "0xDB00*",
+			"pointto": "0xDB00",
+			"primitive": "ptr"
+		}, {
+			"name": "secondaryProjectInfo*",
+			"pointto": "secondaryProjectInfo",
+			"primitive": "ptr"
+		}, {
+			"name": "PrivateObjectDescriptor*",
+			"pointto": "PrivateObjectDescriptor",
+			"primitive": "ptr"
+		}, {
+			"name": "0x8890*",
+			"pointto": "0x8890",
+			"primitive": "ptr"
+		}, {
+			"name": "0xDED0*",
+			"pointto": "0xDED0",
+			"primitive": "ptr"
+		}, {
+			"name": "0x2EF0*",
+			"pointto": "0x2EF0",
+			"primitive": "ptr"
+		}, {
+			"name": "0x9220*",
+			"pointto": "0x9220",
+			"primitive": "ptr"
+		}, {
+			"name": "0xD0D0*",
+			"pointto": "0xD0D0",
+			"primitive": "ptr"
+		}, {
+			"name": "0xA4C0*",
+			"pointto": "0xA4C0",
+			"primitive": "ptr"
+		}, {
+			"name": "0xF750*",
+			"pointto": "0xF750",
+			"primitive": "ptr"
+		}, {
+			"name": "0x6C70*",
+			"pointto": "0x6C70",
+			"primitive": "ptr"
+		}, {
+			"name": "0x7328*",
+			"pointto": "0x7328",
+			"primitive": "ptr"
+		}, {
+			"name": "0x3100*",
+			"pointto": "0x3100",
+			"primitive": "ptr"
+		}, {
+			"name": "0x31F8*",
+			"pointto": "0x31F8",
+			"primitive": "ptr"
+		}, {
+			"name": "0xB4B0*",
+			"pointto": "0xB4B0",
+			"primitive": "ptr"
+		}, {
+			"name": "0xD270*",
+			"pointto": "0xD270",
+			"primitive": "ptr"
+		}, {
+			"name": "0x4730*",
+			"pointto": "0x4730",
+			"primitive": "ptr"
+		}, {
+			"name": "0x97C0*",
+			"pointto": "0x97C0",
+			"primitive": "ptr"
+		}, {
+			"name": "0x3150*",
+			"pointto": "0x3150",
+			"primitive": "ptr"
+		}, {
+			"name": "0x6CC0*",
+			"pointto": "0x6CC0",
+			"primitive": "ptr"
+		}, {
+			"name": "referenceTable*",
+			"pointto": "referenceTable",
+			"primitive": "ptr"
+		}, {
+			"name": "0xD0D0*",
+			"pointto": "0xD0D0",
+			"primitive": "ptr"
+		}, {
+			"name": "0xA4C0*",
+			"pointto": "0xA4C0",
+			"primitive": "ptr"
+		}, {
+			"name": "0xF750*",
+			"pointto": "0xF750",
+			"primitive": "ptr"
+		}, {
+			"name": "0x3128*",
+			"pointto": "0x3128",
+			"primitive": "ptr"
+		}, {
+			"name": "publicObjectDescriptorArray*",
+			"pointto": "publicObjectDescriptorArray",
+			"primitive": "ptr"
+		}, {
+			"name": ".data_0xE9F8*",
+			"pointto": ".data_0xE9F8",
+			"primitive": "ptr"
+		}, {
+			"name": "ProjectEntry*",
+			"pointto": "ProjectEntry",
+			"primitive": "ptr"
+		}, {
+			"name": "methodInfo*",
+			"pointto": "methodInfo",
+;			"primitive": "ptr"
+		}
+
+
+
+
+
+	],
+	"structs": [{
+			"name": "publicObjectDescriptor",
+			"members": [{
+					"type": "objectInfo*",
+					"name": "0x00: ObjectInfo"
+				},
+				{
+					"type": "uint64",
+					"name": "0x08: Reserved (-1)"
+				},
+				{
+					"type": "ptr",
+					"name": "0x10: PCPublicVariableIntegers"
+				},
+				{
+					"type": "ptr",
+					"name": "0x18: PCStaticVariableIntegers"
+				},
+				{
+					"type": "ptr",
+					"name": "0x20: DataPublicVariables"
+				},
+				{
+					"type": "ptr",
+					"name": "0x28: DataStaticVariables"
+				},
+				{
+					"type": "char*",
+					"name": "0x30: ModuleName"
+				},
+				{
+					"type": "uint64",
+					"name": "0x38: MethodCount"
+				},
+				{
+					"type": "methodNameArray*",
+					"name": "0x40: Methods"
+				},
+				{
+					"type": "int",
+					"name": "0x48: OffsetToStaticVariables"
+				},
+				{
+					"type": "int",
+					"name": "0x4C: Flags"
+				},
+				{
+					"type": "uint64",
+					"name": "0x50: Null"
+				}
+			]
+		},
+		{
+			"name": "methodNameArray",
+			"members": [{
+				"type": "char*",
+				"name": "MethodName",
+				"arrsize": 1
+			}]
+		}, {
+			"name": "objectInfo",
+			"members": [{
+				"type": "int16",
+				"name": "0x00: ReferenceCount?"
+			}, {
+				"type": "int16",
+				"name": "0x02: ObjectIndex"
+			}, {
+				"type": "int32",
+				"name": "0x04"
+			}, {
+				"type": "objectTable*",
+				"name": "0x08"
+			}, {
+				"type": "ptr",
+				"name": "0x10"
+			}, {
+				"type": "ptr",
+				"name": "0x18"
+			}, {
+				"type": "uint64",
+				"name": "0x20"
+			}, {
+				"type": "uint64",
+				"name": "0x28"
+			}, {
+				"type": "publicObjectDescriptor*",
+				"name": "0x30: publicObjectDescriptor"
+			}, {
+				"type": "ptr",
+				"name": "0x38"
+			}, {
+				"type": "int16",
+				"name": "0x40: Method Count"
+			}, {
+				"type": "int16",
+				"name": "0x42: Method Count"
+			}, {
+				"type": "int32",
+				"name": "0x44"
+			}, {
+				"type": "ptr",
+				"name": "0x48: Method Pointers"
+			}, {
+				"type": "int16",
+				"name": "0x50"
+			}, {
+				"type": "int16",
+				"name": "0x52"
+			}, {
+				"type": "int32",
+				"name": "0x54"
+			}, {
+				"type": "ptr",
+				"name": "0x58"
+			}, {
+				"type": "ptr",
+				"name": "0x60: Probably Method pointer"
+			}, {
+				"type": "uint64",
+				"name": "0x68"
+			}, {
+				"type": "uint64",
+				"name": "0x70"
+			}, {
+				"type": "uint64",
+				"name": "0x78: "
+			}, {
+				"type": "uint64",
+				"name": "0x80"
+			}, {
+				"type": "ptr",
+				"name": "0x88: ?Some object-related object"
+			}]
+		},
+
+		{
+			"name": "projectInfo",
+			"members": [{
+					"type": "ptr",
+					"name": "0x00_ObjectInterfaces"
+				},
+				{
+					"type": "uint64",
+					"name": "0x08"
+				},
+				{
+					"type": "0xD270*",
+					"name": "0x10_pointer"
+				},
+				{
+					"type": "objectTable*",
+					"name": "0x18_objectTable"
+				},
+				{
+					"type": "wchar_t",
+					"name": "FileName",
+					"arrsize": 2048
+				},
+				{
+					"type": "uint64",
+					"name": "0x1020_unknown2"
+				},
+				{
+					"type": "0xE288*",
+					"name": "0x1028"
+				},
+				{
+					"type": "objectPointerArray*",
+					"name": "0x1030_ObjectPointerArray"
+				},
+				{
+					"type": "uint64",
+					"name": "0x1038: ObjectCount"
+				},
+				{
+					"type": "objectInfo1Array*",
+					"name": "0x1040: objectInfo1Array"
+				},
+				{
+					"type": "uint64",
+					"name": "0x1048: unknownValue"
+				}
+
+			]
+		},
+		{
+			"name": "objectPointerArray",
+			"members": [{
+				"type": "publicObjectDescriptor*",
+				"name": "PublicObjectDescriptor",
+				"arrsize": 3
+			}]
+		},
+
+		{
+			"name": "objectInfo1Array",
+			"members": [{
+				"type": "objectInfo1*",
+				"name": "objectInfo1",
+				"arrsize": 3
+			}]
+		},
+		{
+			"name": "objectInfo1",
+			"members": [{
+				"type": "nativeCode*",
+				"name": "0x00"
+			}, {
+				"type": "objectInfo3*",
+				"name": "0x08"
+			}, {
+				"type": "int32",
+				"name": "0x10: ObjectType (3=object, 2=module)"
+			}, {
+				"type": "int32",
+				"name": "0x14: ObjectIndex"
+			}, {
+				"type": "projectInfo*",
+				"name": "0x18"
+			}, {
+				"type": "objectInfo2*",
+				"name": "0x20"
+			}, {
+				"type": "uint64",
+				"name": "0x28"
+			}, {
+				"type": "nativeCode*",
+				"name": "0x30"
+			}, {
+				"type": "uint64",
+				"name": "0x38"
+			}, {
+				"type": "uint64",
+				"name": "0x40"
+			}, {
+				"type": "nativeCode*",
+				"name": "0x48"
+			}, {
+				"type": "uint64",
+				"name": "0x50"
+			}, {
+				"type": "uint64",
+				"name": "0x58"
+			}, {
+				"type": "0xDDB0*",
+				"name": "0x60"
+			}, {
+				"type": "uint64",
+				"name": "0x68"
+			}]
+		}, {
+			"name": "objectInfo2",
+			"members": [{
+				"type": "nativeCode*",
+				"name": "0x00"
+			}, {
+				"type": "nativeCode*",
+				"name": "0x08"
+			}, {
+				"type": "nativeCode*",
+				"name": "0x10"
+			}, {
+				"type": "nativeCode*",
+				"name": "0x18"
+			}, {
+				"type": "uint64",
+				"name": "0x20"
+			}, {
+				"type": "objectLinkedList*",
+				"name": "0x28"
+			}, {
+				"type": "uint64",
+				"name": "0x30"
+			}, {
+				"type": "uint64",
+				"name": "0x38"
+			}, {
+				"type": "uint64",
+				"name": "0x40"
+			}, {
+				"type": "0x0730*",
+				"name": "0x48"
+			}, {
+				"type": "0x0AF0*",
+				"name": "0x50"
+			}, {
+				"type": "uint64",
+				"name": "0x58"
+			}, {
+				"type": "uint64",
+				"name": "0x60"
+			}, {
+				"type": "uint64",
+				"name": "0x68"
+			}, {
+				"type": "uint64",
+				"name": "0x70"
+			}, {
+				"type": "uint64",
+				"name": "0x78"
+			}, {
+				"type": "uint64",
+				"name": "0x80"
+			}, {
+				"type": "uint64",
+				"name": "0x88"
+			}, {
+				"type": "objectInfo1*",
+				"name": "0x90"
+			}, {
+				"type": "interfaces*",
+				"name": "0x98"
+			}, {
+				"type": "uint64",
+				"name": "0xA0"
+			}, {
+				"type": "0x59E0*",
+				"name": "0xA8"
+			}, {
+				"type": "uint64",
+				"name": "0xB0"
+			}, {
+				"type": "uint64",
+				"name": "0xB8"
+			}, {
+				"type": "0xA1E0*",
+				"name": "0xC0"
+			}, {
+				"type": "0xA1E0*",
+				"name": "0xC8"
+			}, {
+				"type": "uint64",
+				"name": "0xD0"
+			}, {
+				"type": "uint64",
+				"name": "0xD8"
+			}, {
+				"type": "uint64",
+				"name": "0xE0"
+			}, {
+				"type": "uint64",
+				"name": "0xE8"
+			}, {
+				"type": "uint64",
+				"name": "0xF0"
+			}, {
+				"type": "uint64",
+				"name": "0xF8"
+			}]
+		}
+
+		, {
+			"name": "nativeCode",
+			"members": []
+		}, {
+			"name": "objectInfo3",
+			"members": [{
+				"type": "0xA1E0*",
+				"name": "0x00: optional object info?"
+			}, {
+				"type": "0xA1E0*",
+				"name": "0x08: optional object info?"
+			}, {
+				"type": "uint64",
+				"name": "0x10"
+			}, {
+				"type": "uint64",
+				"name": "0x18"
+			}, {
+				"type": "objectInfo*",
+				"name": "0x20: ObjectInfo"
+			}, {
+				"type": "uint64",
+				"name": "0x28"
+			}, {
+				"type": "uint64",
+				"name": "0x30"
+			}, {
+				"type": "uint64",
+				"name": "0x38"
+			}]
+		}, {
+			"name": "0x63D0",
+			"members": []
+		}, {
+			"name": "0x93A0",
+			"members": []
+		}, {
+			"name": "0x99A0",
+			"members": []
+		}, {
+			"name": "0x44E0",
+			"members": []
+		}, {
+			"name": "0x9E40",
+			"members": []
+		}, {
+			"name": "0xC620",
+			"members": []
+		}, {
+			"name": "0xA1E0",
+			"members": [{
+				"type": "0x63D0*",
+				"name": "0x00"
+			}, {
+				"type": "0x93A0*",
+				"name": "0x08"
+			}, {
+				"type": "0xA1E0*",
+				"name": "0x10"
+			}, {
+				"type": "0x99A0*",
+				"name": "0x18"
+			}, {
+				"type": "0x44E0*",
+				"name": "0x20"
+			}, {
+				"type": "uint64",
+				"name": "0x28"
+			}, {
+				"type": "objectInfo2*",
+				"name": "objectInfo2"
+			}, {
+				"type": "uint64",
+				"name": "0x38"
+			}, {
+				"type": "uint64",
+				"name": "0x40"
+			}, {
+				"type": "uint64",
+				"name": "0x48"
+			}, {
+				"type": "0x9E40*",
+				"name": "0x50"
+			}, {
+				"type": "uint64",
+				"name": "0x58"
+			}, {
+				"type": "0x44E0*",
+				"name": "0x60"
+			}, {
+				"type": "uint64",
+				"name": "0x68"
+			}, {
+				"type": "uint64",
+				"name": "0x70"
+			}, {
+				"type": "uint64",
+				"name": "0x78"
+			}, {
+				"type": "uint64",
+				"name": "0x80"
+			}, {
+				"type": "uint64",
+				"name": "0x88"
+			}, {
+				"type": "0xC620*",
+				"name": "0x90"
+			}, {
+				"type": "uint64",
+				"name": "0x98"
+			}, {
+				"type": "uint64",
+				"name": "0xA0"
+			}, {
+				"type": "uint64",
+				"name": "0xA8"
+			}]
+		}, {
+			"name": "0xDDB0",
+			"members": [{
+				"type": "nativeCode*",
+				"name": "0x00"
+			}, {
+				"type": "uint64",
+				"name": "0x08"
+			}, {
+				"type": "0x1C90*",
+				"name": "0x10"
+			}, {
+				"type": "0x6D20*",
+				"name": "0x18"
+			}, {
+				"type": "uint64",
+				"name": "0x20"
+			}, {
+				"type": "uint64",
+				"name": "0x28"
+			}]
+		}, {
+			"name": "0x1C90",
+			"members": []
+		}, {
+			"name": "0x6D20",
+			"members": [{
+				"type": "0x02E8*",
+				"name": "0x00"
+			}, {
+				"type": "0x02B0*",
+				"name": "0x08"
+			}, {
+				"type": "0x6D20*",
+				"name": "0x10"
+			}, {
+				"type": "0x6D60*",
+				"name": "0x18"
+			}]
+		}, {
+			"name": "0x02E8",
+			"members": []
+		}, {
+			"name": "0x02B0",
+			"members": []
+		}, {
+			"name": "0x6D60",
+			"members": []
+		}, {
+			"name": "interfaces",
+			"members": [{
+				"type": "nativeCode*",
+				"name": "0x00"
+			}, {
+				"type": "nativeCode*",
+				"name": "0x08"
+			}, {
+				"type": "nativeCode*",
+				"name": "0x10"
+			}, {
+				"type": "uint64",
+				"name": "0x18"
+			}, {
+				"type": "uint64",
+				"name": "0x20"
+			}, {
+				"type": "uint64",
+				"name": "0x28"
+			}, {
+				"type": "uint64",
+				"name": "0x30"
+			}, {
+				"type": "interfaces*",
+				"name": "0x38_next"
+			}]
+		}, {
+			"name": "0x59E0",
+			"members": []
+		}, {
+			"name": "objectLinkedList",
+			"members": [{
+				"type": "objectLinkedList*",
+				"name": "0x00_previous"
+			}, {
+				"type": "objectLinkedList*",
+				"name": "0x08_next"
+			}, {
+				"type": "uint64",
+				"name": "0x10"
+			}, {
+				"type": "uint64",
+				"name": "0x18"
+			}, {
+				"type": "uint64",
+				"name": "0x20"
+			}, {
+				"type": "uint64",
+				"name": "0x28"
+			}, {
+				"type": "uint64",
+				"name": "0x30"
+			}, {
+				"type": "uint64",
+				"name": "0x38"
+			}, {
+				"type": "objectInfo2*",
+				"name": "0x40_backPointer"
+			}, {
+				"type": "uint64",
+				"name": "0x48"
+			}, {
+				"type": "uint64",
+				"name": "0x50"
+			}, {
+				"type": "uint64",
+				"name": "0x58"
+			}, {
+				"type": "uint64",
+				"name": "0x60"
+			}, {
+				"type": "uint64",
+				"name": "0x68"
+			}, {
+				"type": "uint64",
+				"name": "0x70"
+			}, {
+				"type": "uint64",
+				"name": "0x78"
+			}, {
+				"type": "uint64",
+				"name": "0x80"
+			}, {
+				"type": "uint64",
+				"name": "0x88"
+			}, {
+				"type": "uint64",
+				"name": "0x90"
+			}, {
+				"type": "uint64",
+				"name": "0x98"
+			}, {
+				"type": "uint64",
+				"name": "0xA0"
+			}, {
+				"type": "uint64",
+				"name": "0xA8"
+			}, {
+				"type": "uint64",
+				"name": "0xB0"
+			}, {
+				"type": "uint64",
+				"name": "0xB8"
+			}]
+		}, {
+			"name": "0x0730",
+			"members": [{
+				"type": "nativeCode*",
+				"name": "0x00"
+			}, {
+				"type": "uint64",
+				"name": "0x08"
+			}, {
+				"type": "uint64",
+				"name": "0x10"
+			}, {
+				"type": "uint64",
+				"name": "0x18"
+			}, {
+				"type": "0x75D0*",
+				"name": "0x20"
+			}, {
+				"type": "0x7970*",
+				"name": "0x28"
+			}, {
+				"type": "0x9FB0*",
+				"name": "0x30"
+			}, {
+				"type": "0x7670*",
+				"name": "0x38"
+			}, {
+				"type": "uint64",
+				"name": "0x40"
+			}, {
+				"type": "uint64",
+				"name": "0x48"
+			}, {
+				"type": "0x6A30*",
+				"name": "0x50"
+			}, {
+				"type": "uint64",
+				"name": "0x58"
+			}, {
+				"type": "uint64",
+				"name": "0x60"
+			}, {
+				"type": "uint64",
+				"name": "0x68"
+			}, {
+				"type": "uint64",
+				"name": "0x70"
+			}, {
+				"type": "uint64",
+				"name": "0x78"
+			}, {
+				"type": "uint64",
+				"name": "0x80"
+			}, {
+				"type": "uint64",
+				"name": "0x88"
+			}, {
+				"type": "uint64",
+				"name": "0x90"
+			}, {
+				"type": "uint64",
+				"name": "0x98"
+			}, {
+				"type": "uint64",
+				"name": "0xA0"
+			}, {
+				"type": "uint64",
+				"name": "0xA8"
+			}]
+		}, {
+			"name": "0x75D0",
+			"members": []
+		}, {
+			"name": "0x7970",
+			"members": []
+		}, {
+			"name": "0x9FB0",
+			"members": []
+		}, {
+			"name": "0x7670",
+			"members": []
+		}, {
+			"name": "0x6A30",
+			"members": []
+		}, {
+			"name": "0x0AF0",
+			"members": [{
+				"type": "nativeCode*",
+				"name": "0x00"
+			}, {
+				"type": "uint64",
+				"name": "0x08"
+			}, {
+				"type": "uint64",
+				"name": "0x10"
+			}, {
+				"type": "uint64",
+				"name": "0x18"
+			}, {
+				"type": "0x7850*",
+				"name": "0x20"
+			}, {
+				"type": "0x78D0*",
+				"name": "0x28"
+			}, {
+				"type": "0x9C50*",
+				"name": "0x30"
+			}, {
+				"type": "0x7B70*",
+				"name": "0x38"
+			}, {
+				"type": "uint64",
+				"name": "0x40"
+			}, {
+				"type": "uint64",
+				"name": "0x48"
+			}, {
+				"type": "uint64",
+				"name": "0x50"
+			}, {
+				"type": "uint64",
+				"name": "0x58"
+			}, {
+				"type": "nativeCode*",
+				"name": "0x60"
+			}, {
+				"type": "nativeCode*",
+				"name": "0x68"
+			}, {
+				"type": "nativeCode*",
+				"name": "0x70"
+			}, {
+				"type": "nativeCode*",
+				"name": "0x78"
+			}, {
+				"type": "0xDB00*",
+				"name": "0x80"
+			}, {
+				"type": "uint64",
+				"name": "0x88"
+			}, {
+				"type": "uint64",
+				"name": "0x90"
+			}, {
+				"type": "uint64",
+				"name": "0x98"
+			}, {
+				"type": "uint64",
+				"name": "0xA0"
+			}, {
+				"type": "nativeCode*",
+				"name": "0xA8"
+			}]
+		}, {
+			"name": "0x7850",
+			"members": []
+		}, {
+			"name": "0x78D0",
+			"members": []
+		}, {
+			"name": "0x9C50",
+			"members": []
+		}, {
+			"name": "0x7B70",
+			"members": []
+		}, {
+			"name": "0xDB00",
+			"members": []
+		}, {
+			"name": "objectInfo1",
+			"members": [{
+				"type": "nativeCode*",
+				"name": "0x00"
+			}, {
+				"type": "objectInfo3*",
+				"name": "0x08"
+			}, {
+				"type": "uint64",
+				"name": "0x10"
+			}, {
+				"type": "projectInfo*",
+				"name": "0x18"
+			}, {
+				"type": "objectInfo2*",
+				"name": "0x20"
+			}, {
+				"type": "uint64",
+				"name": "0x28"
+			}, {
+				"type": "nativeCode*",
+				"name": "0x30"
+			}, {
+				"type": "uint64",
+				"name": "0x38"
+			}, {
+				"type": "uint64",
+				"name": "0x40"
+			}, {
+				"type": "nativeCode*",
+				"name": "0x48"
+			}, {
+				"type": "uint64",
+				"name": "0x50"
+			}, {
+				"type": "uint64",
+				"name": "0x58"
+			}, {
+				"type": "0xDDB0*",
+				"name": "0x60"
+			}, {
+				"type": "uint64",
+				"name": "0x68"
+			}, {
+				"type": "uint64",
+				"name": "0x70"
+			}, {
+				"type": "uint64",
+				"name": "0x78"
+			}, {
+				"type": "uint64",
+				"name": "0x80"
+			}, {
+				"type": "uint64",
+				"name": "0x88"
+			}]
+		}, {
+			"name": "objectTable",
+			"members": [{
+				"type": "X1*",
+				"name": "0x00_X1"
+			}, {
+				"type": "projectInfo*",
+				"name": "0x08"
+			}, {
+				"type": "secondaryProjectInfo*",
+				"name": "0x10"
+			}, {
+				"type": "uint64",
+				"name": "0x18: Reserved (-1)"
+			}, {
+				"type": "uint64",
+				"name": "0x20: Null (0)"
+			}, {
+				"type": "0x6CC0",
+				"name": "0x28: In memory project data??"
+			}]
+		}, {
+			"name": "secondaryProjectInfo",
+			"members": [{
+				"type": "PrivateObjectDescriptor*",
+				"name": "0x00"
+			}, {
+				"type": "objectTable*",
+				"name": "0x08"
+			}, {
+				"type": "uint64",
+				"name": "0x10"
+			}, {
+				"type": "uint64",
+				"name": "0x18"
+			}, {
+				"type": "0x8890*",
+				"name": "0x20"
+			}, {
+				"type": "uint64",
+				"name": "0x28"
+			}, {
+				"type": "uint64",
+				"name": "0x30"
+			}, {
+				"type": "uint64",
+				"name": "0x38"
+			}, {
+				"type": "uint64",
+				"name": "0x40"
+			}, {
+				"type": "uint64",
+				"name": "0x48"
+			}]
+		}, {
+			"name": "PrivateObjectDescriptor",
+			"members": [{
+				"type": "0xDED0*",
+				"name": "0x00"
+			}, {
+				"type": "uint64",
+				"name": "0x08"
+			}, {
+				"type": "secondaryProjectInfo*",
+				"name": "0x10"
+			}, {
+				"type": "uint64",
+				"name": "0x18"
+			}]
+		}, {
+			"name": "0x8890",
+			"members": []
+		}, {
+			"name": "0xDED0",
+			"members": [{
+				"type": "projectInfo*",
+				"name": "0x00"
+			}, {
+				"type": "uint64",
+				"name": "0x08"
+			}, {
+				"type": "nativeCode*",
+				"name": "0x10"
+			}, {
+				"type": "nativeCode*",
+				"name": "0x18"
+			}, {
+				"type": "nativeCode*",
+				"name": "0x20"
+			}, {
+				"type": "uint64",
+				"name": "0x28"
+			}, {
+				"type": "0x2EF0*",
+				"name": "0x30"
+			}, {
+				"type": "uint64",
+				"name": "0x38"
+			}, {
+				"type": "uint64",
+				"name": "0x40"
+			}, {
+				"type": "0x9220*",
+				"name": "0x48"
+			}, {
+				"type": "uint64",
+				"name": "0x50"
+			}, {
+				"type": "uint64",
+				"name": "0x58"
+			}, {
+				"type": "uint64",
+				"name": "0x60"
+			}, {
+				"type": "uint64",
+				"name": "0x68"
+			}]
+		}, {
+			"name": "0x2EF0",
+			"members": []
+		}, {
+			"name": "0x9220",
+			"members": []
+		}, {
+			"name": "0x6CC0",
+			"members": [{
+					"type": "0x3128*",
+					"name": "0x00"
+				},
+				{
+					"type": "GUID",
+					"name": "0x08: GUID"
+				}, {
+					"type": "int16",
+					"name": "0x18: compiled state? (01)"
+				}, {
+					"type": "int16",
+					"name": "0x1A: object count? (03)"
+				}, {
+					"type": "int16",
+					"name": "0x1C: compiled objects? (03)"
+				}, {
+					"type": "int16",
+					"name": "0x1E: objects in use? (01)"
+				}, {
+					"type": "publicObjectDescriptorArray*",
+					"name": "0x20"
+				}, {
+					"type": "uint64",
+					"name": "0x28: ReferenceCount?"
+				}, {
+					"type": "referenceTable*",
+					"name": "0x30"
+				}, {
+					"type": "uint64",
+					"name": "0x38"
+				}, {
+					"type": "char*",
+					"name": "0x40_ProjectName"
+				}, {
+					"type": "int32",
+					"name": "0x48: LCID (Language Code)"
+				}, {
+					"type": "int32",
+					"name": "0x4C: LCID_2 (Language Code)"
+				}, {
+					"type": "ptr",
+					"name": "0x50: ? null"
+				}, {
+					"type": "uint64",
+					"name": "0x58"
+				}, {
+					"type": "uint64",
+					"name": "0x60"
+				}, {
+					"type": "uint64",
+					"name": "0x68"
+				}, {
+					"type": "uint64",
+					"name": "0x70"
+				}, {
+					"type": "uint64",
+					"name": "0x78"
+				}, {
+					"type": "uint64",
+					"name": "0x80"
+				}, {
+					"type": "uint64",
+					"name": "0x88"
+				}, {
+					"type": "uint64",
+					"name": "0x90"
+				}
+			]
+		}, {
+			"name": "referenceTable",
+			"members": [{
+				"type": "0x6E18*",
+				"name": "0x00"
+			}, {
+				"type": "uint64",
+				"name": "0x08"
+			}, {
+				"type": "0x6EF0*",
+				"name": "0x10"
+			}, {
+				"type": "uint64",
+				"name": "0x18"
+			}, {
+				"type": "0x6F88*",
+				"name": "0x20"
+			}, {
+				"type": "uint64",
+				"name": "0x28"
+			}, {
+				"type": "0x7040*",
+				"name": "0x30"
+			}, {
+				"type": "uint64",
+				"name": "0x38"
+			}]
+		}
+
+		, {
+			"name": "0xD0D0",
+			"members": []
+		}, {
+			"name": "0xA4C0",
+			"members": []
+		}, {
+			"name": "0xF750",
+			"members": []
+		}, {
+			"name": "X1",
+			"members": [{
+				"type": "0xDED0*",
+				"name": "0x00"
+			}, {
+				"type": "uint64",
+				"name": "0x08"
+			}, {
+				"type": "objectTable*",
+				"name": "0x10"
+			}, {
+				"type": "uint64",
+				"name": "0x18"
+			}, {
+				"type": "0xDED0*",
+				"name": "0x20"
+			}, {
+				"type": "uint64",
+				"name": "0x28"
+			}, {
+				"type": "0x6C70*",
+				"name": "0x30"
+			}, {
+				"type": "0x6C70*",
+				"name": "0x38"
+			}, {
+				"type": "0x7328*",
+				"name": "0x40"
+			}, {
+				"type": "uint64",
+				"name": "0x48"
+			}, {
+				"type": "uint64",
+				"name": "0x50"
+			}, {
+				"type": "uint64",
+				"name": "0x58"
+			}, {
+				"type": "0xDED0*",
+				"name": "0x60"
+			}, {
+				"type": "uint64",
+				"name": "0x68"
+			}, {
+				"type": "0x3100*",
+				"name": "0x70"
+			}, {
+				"type": "0x3100*",
+				"name": "0x78"
+			}, {
+				"type": "0x31F8*",
+				"name": "0x80"
+			}, {
+				"type": "uint64",
+				"name": "0x88"
+			}, {
+				"type": "uint64",
+				"name": "0x90"
+			}, {
+				"type": "uint64",
+				"name": "0x98"
+			}, {
+				"type": "0xB4B0*",
+				"name": "0xA0"
+			}, {
+				"type": "uint64",
+				"name": "0xA8"
+			}]
+		}, {
+			"name": "0x6C70",
+			"members": []
+		}, {
+			"name": "0x7328",
+			"members": []
+		}, {
+			"name": "0x3100",
+			"members": []
+		}, {
+			"name": "0x31F8",
+			"members": []
+		}, {
+			"name": "0xB4B0",
+			"members": []
+		}
+
+		, {
+			"name": "0xD270",
+			"members": [{
+				"type": "interfaces*",
+				"name": "0x00"
+			}, {
+				"type": "objectTable*",
+				"name": "0x08"
+			}, {
+				"type": "wchar_t",
+				"name": "FileName",
+				"arrsize": 2048
+			}]
+		}, {
+			"name": "0xE288",
+			"members": [{
+				"type": "nativeCode*",
+				"name": "0x00: nativeCode"
+			}, {
+				"type": "objectPointerArray*",
+				"name": "0x08: PublicObjectDescriptors"
+			}, {
+				"type": "uint64",
+				"name": "0x10: Count of PublicObjectDescriptors"
+			}, {
+				"type": "objectInfo1Array*",
+				"name": "0x18: ObjectInfoArray"
+			}, {
+				"type": "uint64",
+				"name": "0x20"
+			}, {
+				"type": "uint64",
+				"name": "0x28"
+			}, {
+				"type": "0xDDB0*",
+				"name": "0x30"
+			}, {
+				"type": "uint64",
+				"name": "0x38"
+			}, {
+				"type": "uint64",
+				"name": "0x40"
+			}, {
+				"type": "uint64",
+				"name": "0x48"
+			}, {
+				"type": "uint64",
+				"name": "0x50"
+			}, {
+				"type": "0x97C0*",
+				"name": "0x58: heap pointer??"
+			}, {
+				"type": "0x3150*",
+				"name": "0x60: heap pointer??"
+			}, {
+				"type": "uint64",
+				"name": "0x68"
+			}]
+		}, {
+			"name": "0x97C0",
+			"members": []
+		}, {
+			"name": "0x3150",
+			"members": []
+		}, {
+			"name": "GUID",
+			"members": [{
+				"type": "uint8",
+				"name": "GUID",
+				"arrsize": 16
+			}]
+		}, {
+			"name": "0x3128",
+			"members": [{
+				"type": "uint64",
+				"name": "0x00"
+			}, {
+				"type": "uint64",
+				"name": "0x08"
+			}, {
+				"type": "0xD0D0*",
+				"name": "0x10"
+			}, {
+				"type": "uint64",
+				"name": "0x18"
+			}, {
+				"type": "uint64",
+				"name": "0x20"
+			}, {
+				"type": "uint64",
+				"name": "0x28"
+			}, {
+				"type": "uint64",
+				"name": "0x30"
+			}, {
+				"type": "uint64",
+				"name": "0x38"
+			}, {
+				"type": "0xA4C0*",
+				"name": "0x40"
+			}, {
+				"type": "uint64",
+				"name": "0x48"
+			}, {
+				"type": "0xF750*",
+				"name": "0x50"
+			}, {
+				"type": "uint64",
+				"name": "0x58"
+			}]
+		}, {
+			"name": "0xD0D0",
+			"members": []
+		}, {
+			"name": "0xA4C0",
+			"members": []
+		}, {
+			"name": "0xF750",
+			"members": []
+		}, {
+			"name": "publicObjectDescriptorArray",
+			"members": [{
+				"type": "publicObjectDescriptor",
+				"name": "PublicObjectDescriptor",
+				"arrsize": 3
+			}]
+		}, {
+			"name": ".data_0xE9F8",
+			"members": [{
+				"type": "uint64",
+				"name": "0x00: Null"
+			}, {
+				"type": "ProjectEntry*",
+				"name": "0x08: &ProjectEntry[0]"
+			}, {
+				"type": "ptr",
+				"name": "0x10: Unknown"
+			}, {
+				"type": "uint64",
+				"name": "0x18: Null"
+			}, {
+				"type": "ptr",
+				"name": "0x20: Unknown"
+			}, {
+				"type": "uint64",
+				"name": "0x28: Null"
+			}]
+		}, {
+			"name": "ProjectEntry",
+			"members": [{
+				"type": "ProjectEntry*",
+				"name": "0x00: Next"
+			}, {
+				"type": "ProjectEntry*",
+				"name": "0x08: Previous"
+			}, {
+				"type": "projectInfo*",
+				"name": "0x10: &ProjectInfo"
+			}, {
+				"type": "uint64",
+				"name": "0x18: Unknown 0x01"
+			}, {
+				"type": "uint64",
+				"name": "0x20: Null"
+			}]
+		}
+		, {"name":"methodDescriptor", "members":[
+		{"type":"uint64", "name":"0x00 null?"}
+		,{"type":"methodInfo*","name":"0x08 method info"}
+		]}
+		, {"name":"methodInfo","members":[
+			{"name":"0x00 Object Info","type":"objectInfo*"}
+		]}
+	]
+}
