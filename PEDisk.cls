@@ -173,11 +173,11 @@ End Sub
 
 #End If
 
-Private Sub iPortableExecutable_Load(ModuleName As String)
+Private Sub iPortableExecutable_Load(moduleName As String)
   Dim result As Long
   mFileHandle = FreeFile
   On Error GoTo HandleError
-  Open ModuleName For Binary Shared As #mFileHandle
+  Open moduleName For Binary Shared As #mFileHandle
   LoadDosHeader
   LoadNtHeader
   LoadSectionHeaders

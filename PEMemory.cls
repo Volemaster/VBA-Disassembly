@@ -159,11 +159,11 @@ End Function
 
 #End If
 
-Private Sub iPortableExecutable_Load(ModuleName As String)
+Private Sub iPortableExecutable_Load(moduleName As String)
   Dim result As Long
-  mhModule = GetModuleHandle(ModuleName)
+  mhModule = GetModuleHandle(moduleName)
   If mhModule = 0 Then
-    Err.Raise VBA.vbObjectError, , "Unable to load module " & ModuleName
+    Err.Raise VBA.vbObjectError, , "Unable to load module " & moduleName
     Exit Sub
   End If
   result = GetModuleInformation(mhProcess, mhModule, mModuleInfo, ModuleInfoSize)
