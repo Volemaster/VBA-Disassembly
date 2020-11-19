@@ -22,12 +22,12 @@ public type ProjectInfo
     QWord1 as LongLong                         '   0x08
     lpD270 as LongPtr                          '   0x10    'Unknown
     lpObjectTable as LongPtr                   '   0x18
-    FileNameDescriptor(3) as Byte              '   0x20
-    FileName(2045) as Byte                     '   0x23
+    FileNameDescriptor(6) as Byte              '   0x20
+    FileName(2042) as Byte                     '   0x26	   'actually a BSTR.
     QWord2 as longlong                         ' 0x0820
     lpE288 as LongPtr                          ' 0x0828    'Unknown
     lpPublicObjectDescriptors as LongPtr       ' 0x0830    'Pointer to array of PODs themselves, not an array of pointers.
-    ObjectCount as LongPtr                     ' 0x0838
+    ObjectCount as longlong                    ' 0x0838
     ObjectInfo1Array as LongPtr                ' 0x0840
     QWord3 as LongLong                         ' 0x0848
 end type
@@ -35,7 +35,7 @@ end type
 public type ObjectTable
     lpX1 as LongPtr                            '   0x00
     lpProjectInfo as LongPtr                   '   0x08
-    lpSecondaryProjectInfo as LongPtr          '   0x10
+    lpProjectInfo2 as LongPtr                  '   0x10
     Reserved as LongLong                       '   0x18
     Null1 as LongLong                          '   0x20
     lp6CC0 as LongPtr                          '   0x28
@@ -44,7 +44,7 @@ public type ObjectTable
     ObjectCount as Integer                     '   0x42
     CompiledObjects as Integer                 '   0x44
     ObjectsInUse as Integer                    '   0x46
-    lpPublicObjectDescriptors as LongPtr       '   0x48
+    lpPublicObjectDescriptors as LongPtr       '   0x48    'Array. Members are size 0x38
     ReferenceCount as LongLong                 '   0x50
     lpReferenceTable as LongPtr                '   0x58
     QWord1 as LongLong                         '   0x60
@@ -62,16 +62,17 @@ public type ObjectTable
     QWord9 as LongLong                         '   0xB8
 end type
 
-public type SecondaryProjectInfo
+public type ProjectInfo2
     lpPrivateObjectDescriptors as LongPtr      '   0x00
     lpObjectTable as LongPtr                   '   0x08
-    QWord1 as LongLong                         '   0x10
-    QWord2 as LongLong                         '   0x18
-    lp8890 as LongPtr                          '   0x20
+    qwReserved1 as LongLong                    '   0x10
+    qwNull1 as LongLong                        '   0x18
+    lpObjectMethodDataTable as LongPtr         '   0x20
     QWord3 as LongLong                         '   0x28
-    QWord4 as LongLong                         '   0x30
-    QWord5 as LongLong                         '   0x38
-    QWord6 as LongLong                         '   0x40
+    lpProjectDescription as LongPtr            '   0x30    'Points to char[]
+    lpHelpFile as LongPtr                      '   0x38    'Points to char[]
+	dwNull as Long                             '   0x40
+    dwHelpContextId as Long                    '   0x44
     QWord7 as LongLong                         '   0x48
 end type
 
@@ -112,25 +113,88 @@ public type ObjectInfo
     DWord1 as Long                             '   0x04
     lpObjectTable as LongPtr                   '   0x08
     Ptr1 as LongPtr                            '   0x10
-    Ptr2 as LongPtr                            '   0x18
+    lpObjectMethodData as LongPtr              '   0x18    'see ObjectMethodData
     QWord1 as LongLong                         '   0x20
     QWord2 as LongLong                         '   0x28
     lpPublicObjectDescriptor as LongPtr        '   0x30    'Points directly to the object descriptor itself
-    Ptr3 as LongPtr                            '   0x38
+    Ptr3 as LongPtr                            '   0x38    'Points to something that is generally null
     MethodCount  as Integer                    '   0x40        
-    MethodCount2 as Integer                    '   0x42    'Potentially unreliable?
+    MethodCount2 as Integer                    '   0x42    'Count of compiled methods?
     DWord2 as Long                             '   0x44
     lpMethodInfoPointers as LongPtr            '   0x48    'Array of pointers to MethodInfo structures
     Word1 as Integer                           '   0x50    'Constants in constant pool?
     Word2 as Integer                           '   0x52    'Constants to allocate in constant pool?
     DWord3 as Long                             '   0x54
     Ptr4 as LongPtr                            '   0x58
-    Ptr5 as LongPtr                            '   0x60
-    QWord3 as LongLong                         '   0x68
-    QWord4 as LongLong                         '   0x70
-    QWord5 as LongLong                         '   0x78
-    QWord6 as LongLong                         '   0x80
-    Ptr6 as LongPtr                            '   0x88
+    lpStringTable as LongPtr                   '   0x60    'Array of pointers to literal strings used in module?
+    QWord3 as LongLong                         '   0x68    'Max size of ObjectInfo = 0x70
+end type
+
+public type ObjectMethodData
+	lpPtr1 as LongPtr
+	lpObjectInfo as LongPtr
+	Reserved1 as LongLong
+	Null1 as LongLong
+	Null2 as LongLong
+	lpMethodDataArray as LongPtr               '   0x28    'Array of pointers to MethodData
+	lpMethodData2Array as LongPtr              '   0x30    'Array of pointers to MethodData2
+end type
+
+public enum MethodFlags
+	IsPropertyGet = &H01
+	IsPropertyLet = &H02
+	IsPropertySet = &H03
+	IsMethod = &H0
+	PropertyMask = &H03
+	ArgumentCountMask = &HFC 
+	VisibilityMask = &HFD00
+	IsPrivate = &HFC00
+	IsPublic = &HFD00
+end enum
+
+public enum MethodDataFlag2
+	IsMethod = &H60
+	IsProperty = &H68
+end enum
+
+public Enum ArgumentId
+	'Just go with it, I guess.
+						' vbVarType value
+	Object_AID = &H1C	'  9
+	Variant_AID = &HF   ' 12
+	String_AID = &H10	'  8
+	Date_AID = &HC		'  7
+	Currency_AID = &HD	'  6
+	Double_AID = &HB	'  5
+	Single_AID = &HA	'  4
+	Long_AID = &H8		'  3
+	Integer_AID = &H6	'  2
+End Enum
+
+public type MethodData
+	dwMethodFlag as MethodFlags                '   0x00    'Contains identifier and argument count information: 
+		' Case dwMethodFlag AND PropertyMask WHEN IsPropertyGet then ...
+		' Argument count = (dwMethodFlag AND ArgumentCountMask) / 4
+		' Case (dwMethodFlag AND VisibilityMask) WHEN IsPrivate then ...
+	wReserved as Integer                       '   0x04    'Always 0xFFFF
+	wNull as Integer                           '   0x06    'Always 0x0
+	qwNull1 as LongLong                        '   0x08
+	wSequence as Integer                       '   0x10    'Some sort of unique sequence identifier for the method. VTable placement?
+	wFlag2 as MethodDataFlag2                  '   0x12    '
+	dwNull2 as Long                            '   0x14    '
+	lpArgumentNameArray as LongPtr             '   0x18    'Array of pointers to char[] names
+	qwNull3 as LongLong                        '   0x20
+	qwNull4 as LongLong                        '   0x28
+	dwNull5 as Long                            '   0x30
+	wReturnTypeAID as Integer                  '   0x34    'non-zero when return is present. See "ArgumentId" enum for values.
+	wArgumentTypeAID(0 to &H9) as Integer      '   0x36    'value = ArgumentId enum value +0x40. Actual size = # of args.
+end type
+
+public type MethodData2
+	qwMethodIndex as LongLong                  '   0x00
+	lpStackInfo as LongPtr                     '   0x08
+	qwNull1 as LongLong                        '   0x10
+	lpMethodInfo as LongPtr                    '   0x18
 end type
 
 public type PrivateObjectDescriptor
@@ -145,26 +209,48 @@ public type MethodDescriptor    ' This is the structure that is passed from Addr
     lpMethodInfo as LongPtr                    '   0x08
 end type
 
-public type MethodInfo
-    lpObjectInfo as LongPtr                    '   0x00
-    Unknown(0 to &H57) as Byte                 '   0x08
-    Ptr0x60 as LongPtr                         '   0x60
-end type
 
-                                               '   0x00
-                                               '   0x00
-                                               '   0x00
-                                               '   0x00
-                                               '   0x00
-                                               '   0x00
-                                               '   0x00
-                                               '   0x00
-                                               '   0x00
-                                               '   0x00
-                                               '   0x00
-                                               '   0x00
-                                               '   0x00
-                                               '   0x00
-                                               '   0x00
-                                               '   0x00
-                                               '   0x00
+public type MethodInfo
+	' MethodInfo is prefixed by the actual PCode and, immediately before that, _
+	  a linked list that points to the previous/next entries in the linked list _ 
+	  (which is immediately prior to the PCode).
+	'---- lpPreviousMethodInfoPrefix           '  -0x(dwCodeSize + 0x10)
+	'---- lpNextMethodInfoPrefix               '  -0x(dwCodeSize + 0x08)
+	'---- PCode(dwCodeSize) as byte            '  -0xdwCodeSize
+    lpObjectInfo as LongPtr                    '   0x00
+	Flag1 as Integer                           '   0x08    
+	Flag2 as Integer                           '   0x0A
+	dwCodeSize as Long						   '   0x0C   'Negative offset to P-Code
+	Flag4 as Long                              '   0x10
+	Flag5 as Long                              '   0x14
+	Null1 as LongLong                          '   0x18
+	Flag5 as Long                              '   0x20
+	MI2Header as MethodInfo2Header             '   0x24
+	'next integer is the length of MethodInfo2 -> a variable byte structure
+	'immediately after MethodInfo2 is MethodInfo3.
+	'first integer of MethodInfo3 is the length -> a variable byte structure
+	'Minimum size of each appears to be 0x14.
+end Type
+
+public type MethodInfo2Header
+	SizeInBytes as Integer                      '   0x00
+	Unknown1(12) as Byte                        '   0x02
+	'The structure is extended by unknown content up to the total size given by SizeInBytes
+	'MethodInfo3Header follows MethodInfo2 immediately. It is then byte aligned on 4-byte boundaries.
+end type 
+
+public type MethodInfo3Header
+	SizeInBytes as Integer                      '   0x00
+	Null1 as LongLong                           '   0x02
+	VariableCount as Integer                    '   0x0A
+	dwUnknown1 as Long                          '   0x0C
+	wUnknown2 as Integer                        '   0x0E
+	wUnknown3 as Integer                        '   0x10
+	'an array of MethodVariableInfo(VariableCount) immediately follows this header.
+end type 
+
+public type MethodVariableInfo
+	Offset as Long
+	VarType as Integer
+End Type
+
