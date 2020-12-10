@@ -6,7 +6,7 @@ Attribute VB_Name = "VbaProjects"
 Attribute VB_GlobalNameSpace = False
 Attribute VB_Creatable = False
 Attribute VB_PredeclaredId = False
-Attribute VB_Exposed = True
+Attribute VB_Exposed = False
 Option Base 0
 Option Explicit
 
@@ -52,12 +52,11 @@ Private mProjectInfoSize As Long
 Private mProjectNames As Scripting.Dictionary
 Private mOriginalAddress As LongPtr
 
-Private mVbaProject() As VbaProject
+Private mVbaProject() As IVbaProject
 
 Private Const CLASS_NAME As String = "VbaProjects"
 
-Implements ILoadedFromAddress
-Implements IMethodical
+Implements IVbaProjects
 
 Private Sub Class_Initialize()
   Const METHOD_NAME As String = CLASS_NAME & ".Class_Initialize"
@@ -74,12 +73,8 @@ HandleError:
   Err.Raise Err.Number, METHOD_NAME & "." & Err.Source, Err.Description, Err.HelpFile, Err.HelpContext
 End Sub
 
-#If Win64 Then
-  Private Sub ILoadedFromAddress_LoadFromAddress(ByVal lpAddress As LongLong, Optional Index As Long = 0)
-#Else
-  Private Sub ILoadedFromAddress_LoadFromAddress(ByVal lpAddress As Long, Optional Index As Long = 0)
-#End If
-Const METHOD_NAME As String = "ILoadedFromAddress_LoadFromAddress[" & CLASS_NAME & "]"
+Public Sub Setup(lpAddress As LongPtr)
+Const METHOD_NAME As String = CLASS_NAME & ".Setup"
 ' Do not expose this to the main class interface
   On Error GoTo HandleError
   mOriginalAddress = lpAddress
@@ -88,8 +83,8 @@ Const METHOD_NAME As String = "ILoadedFromAddress_LoadFromAddress[" & CLASS_NAME
 Exit Sub
 HandleError:
   Err.Raise Err.Number, METHOD_NAME & "." & Err.Source, Err.Description, Err.HelpFile, Err.HelpContext
-End Sub
 
+End Sub
 
 Private Sub LoadProjectEntries(ByVal lpAddress As LongPtr)
   Const METHOD_NAME As String = "LoadProjectEntries"
@@ -98,18 +93,35 @@ Private Sub LoadProjectEntries(ByVal lpAddress As LongPtr)
   Call Memory.FollowPointer(VarPtr(mDSPP), lpAddress, LenB(mDSPP))
   nextProject = mDSPP.lpProjectEntry
   lastProject = 0
+  #If Win64 Then
+    mProjectCount = 0
+  #Else
+    mProjectCount = 1
+  #End If
   Do Until nextProject = 0
     Call Memory.FollowPointer(VarPtr(mProjectEntry(mProjectCount)), nextProject, LenB(mProjectEntry(mProjectCount)))
     If mProjectEntry(mProjectCount).lpProjectInfo = 0 Then
+      #If Win64 Then
         Err.Raise INVALID_PROCEDURE_CALL_OR_ARGUMENT, METHOD_NAME, "ProjectEntry(" & mProjectCount & ") structure invalid [bad lpProjectInfo]."
+      #Else
+        'This is valid and indicates that there are no more projects
+        nextProject = 0
+      #End If
     ElseIf mProjectCount > 0 Then
-      If (mProjectEntry(mProjectCount).lpPreviousEntry) <> lastProject Then
-        Err.Raise INVALID_PROCEDURE_CALL_OR_ARGUMENT, METHOD_NAME, "ProjectEntry(" & mProjectCount & ") structure invalid [bad lpPreviousEntry]."
-      End If
+      'Does not exist in Win32
+      #If Win64 Then
+        If (mProjectEntry(mProjectCount).lpPreviousEntry) <> lastProject Then
+          Err.Raise INVALID_PROCEDURE_CALL_OR_ARGUMENT, METHOD_NAME, "ProjectEntry(" & mProjectCount & ") structure invalid [bad lpPreviousEntry]."
+        End If
+      #End If
     Else
-      If mProjectEntry(0).lpPreviousEntry <> 0 Then
-        Err.Raise INVALID_PROCEDURE_CALL_OR_ARGUMENT, METHOD_NAME, "Initial ProjectEntry structure invalid [bad lpPreviousEntry]."
-      End If
+      'Does not exist in Win32
+      #If Win64 Then
+        If mProjectEntry(0).lpPreviousEntry <> 0 Then
+          Err.Raise INVALID_PROCEDURE_CALL_OR_ARGUMENT, METHOD_NAME, "Initial ProjectEntry structure invalid [bad lpPreviousEntry]."
+        End If
+      #End If
+      
     End If
     lastProject = nextProject
     nextProject = mProjectEntry(mProjectCount).lpNextEntry
@@ -130,10 +142,10 @@ HandleError:
   End If
 End Sub
 
-Public Property Get Count() As Long
+Private Property Get IVbaProjects_Count() As Long
   Const METHOD_NAME As String = CLASS_NAME & ".get_Count"
   On Error GoTo HandleError
-  Count = mProjectCount
+  IVbaProjects_Count = mProjectCount
 Exit Property
 HandleError:
   If Err.Source <> METHOD_NAME Then
@@ -143,20 +155,20 @@ HandleError:
   End If
 End Property
 
-Public Property Get Item(Index As Variant) As VbaProject
+Private Property Get IVbaProjects_Item(Index As Variant) As IVbaProject
   Const METHOD_NAME = CLASS_NAME & ".get_Item"
 On Error GoTo HandleError
   If IsNull(Index) Then
     Err.Raise 94, METHOD_NAME
   End If
   If IsNumeric(Index) Then
-    If CLng(Index) < mProjectCount And Index > 0 Then
-      Set Item = mVbaProject(CLng(Index))
+    If CLng(Index) < mProjectCount And Index >= 0 Then
+      Set IVbaProjects_Item = mVbaProject(CLng(Index + 1))  ' This is a 1-based array.
       Exit Property
     End If
   End If
   If mProjectNames.Exists(Index) Then
-    Set Item = mVbaProject(CLng(mProjectNames(Index)))
+    Set IVbaProjects_Item = mVbaProject(CLng(mProjectNames(Index)))
     Exit Property
   End If
   If IsNumeric(Index) Then
@@ -194,16 +206,13 @@ Private Sub LoadProjectInfos()
   Const METHOD_NAME As String = CLASS_NAME & ".LoadProjectInfos"
   Dim i As Long, lpProjectInfo As LongPtr
   Dim lpObjectTable As LongPtr, lpOTProjectInfo As LongPtr
-  Dim iLoader As ILoadedFromAddress
   Const OTPROJECTINFOOFFSET As Long = &H8
   
   On Error GoTo HandleError
   ReDim mVbaProject(1 To mProjectCount)
   ProjectNames.RemoveAll
   For i = 1 To mProjectCount
-    Set mVbaProject(i) = New VbaProject
-    Set iLoader = mVbaProject(i)
-    iLoader.LoadFromAddress mProjectEntry(i).lpProjectInfo
+    Set mVbaProject(i) = PrivateFactory.CreateVbaProject(mProjectEntry(i).lpProjectInfo)  ' New VbaProject
     ProjectNames.Add mVbaProject(i).Name, i
   Next
 Exit Sub
@@ -219,66 +228,13 @@ HandleError:
   End If
 End Sub
 
-#If Win64 Then
-Private Property Get ILoadedFromAddress_OriginalAddress() As LongLong
-#Else
-Private Property Get ILoadedFromAddress_OriginalAddress() As Long
-#End If
-Const METHOD_NAME As String = "ILoadedFromAddress_OriginalAddress[" & CLASS_NAME & "]"
-  ILoadedFromAddress_OriginalAddress = mOriginalAddress
-End Property
-
-
-#If Win64 Then
-Private Function IMethodical_GetAddressByName(CallName As String) As LongLong
-#Else
-Private Function IMethodical_GetAddressByName(CallName As String) As Long
-#End If
-Const METHOD_NAME As String = "IMethodical_GetAddressByName[" & CLASS_NAME & "]"
-  On Error GoTo HandleError
-  IMethodical_GetAddressByName = Me.GetAddressByName(CallName)
-Exit Function
-HandleError:
-  If Err.Source <> METHOD_NAME Then
-    Err.Raise Err.Number, METHOD_NAME & "." & Err.Source, Err.Description, Err.HelpFile, Err.HelpContext
-  Else
-    Err.Raise Err.Number, Err.Source, Err.Description, Err.HelpFile, Err.HelpContext
-  End If
-End Function
-
-Public Function GetAddressByName(CallName As String) As LongPtr
-  ' Parse out the first part and see if any such project exists. _
-    In order to avoid side effects, we're going to require the project _
-    name to be specified.
-  Const METHOD_NAME As String = CLASS_NAME & ".GetAddressByName"
-  Dim thisProjectName As String, firstPeriod As Long, lastPeriod As Long, thisProject As VbaProject
-  On Error GoTo HandleError
-  firstPeriod = VBA.InStr(1, CallName, ".", vbBinaryCompare)
-  If firstPeriod <= 0 Then
-    'Invalid argument - raise error.
-      Err.Raise INVALID_PROCEDURE_CALL_OR_ARGUMENT, METHOD_NAME, "The project name must be specified in calls to GetAddressByName"
-  End If
-  lastPeriod = VBA.InStrRev(CallName, ".", -1, vbBinaryCompare)
-  If firstPeriod = lastPeriod Then
-    'Invalid argument - raise error.
-      Err.Raise INVALID_PROCEDURE_CALL_OR_ARGUMENT, METHOD_NAME, "The project, module, and method/procedure/function names must be specified in calls to GetAddressByName."
-  End If
-  thisProjectName = VBA.Left$(CallName, firstPeriod - 1)
-  With ProjectNames
-    If .Exists(thisProjectName) Then
-      On Error GoTo HandleError
-      Set thisProject = Me.Item(thisProjectName)
-      GetAddressByName = thisProject.GetAddressByName(VBA.Mid$(CallName, firstPeriod + 1))
-    Else
-      Err.Raise INVALID_PROCEDURE_CALL_OR_ARGUMENT, METHOD_NAME, "Project """ & thisProjectName & """ not found.", Err.HelpFile, Err.HelpContext
+Private Sub Class_Terminate()
+  Dim i As Long
+  Dim DC As IChildOfDisposable
+  For i = 1 To IVbaProjects_Count
+    Set DC = IVbaProjects_Item(i - 1)
+    If Not DC Is Nothing Then
+      DC.DisposeOfParent
     End If
-  End With
-Exit Function
-HandleError:
-  If Err.Source <> METHOD_NAME Then
-    Err.Raise Err.Number, METHOD_NAME & "." & Err.Source, Err.Description, Err.HelpFile, Err.HelpContext
-  Else
-    Err.Raise Err.Number, Err.Source, Err.Description, Err.HelpFile, Err.HelpContext
-  End If
-End Function
-
+  Next
+End Sub

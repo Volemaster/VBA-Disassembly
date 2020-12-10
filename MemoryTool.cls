@@ -28,19 +28,37 @@ Private Declare PtrSafe Function GetModuleHandle Lib "kernel32" Alias "GetModule
 Private Declare PtrSafe Sub RtlMoveMemory Lib "kernel32" (ByRef destination As Any, ByVal lpSource As LongPtr, ByVal size As Long)
 Private Declare PtrSafe Function VirtualQueryEx Lib "kernel32" (ByVal hProcess As LongPtr, ByVal lpAddress As LongPtr, ByRef MemoryInformation As MEMORY_BASIC_INFORMATION, ByVal dwLength As Long) As Long
 
-'Private Declare PtrSafe Sub FollowPointer Lib "kernel32" Alias "RtlMoveMemory" (ByRef Destination As Any, ByVal lpSource As LongPtr, ByVal size As Long)
-
 Private mMemoryRange() As MEMORY_BASIC_INFORMATION
 Private mMemoryRangeCount As Long
 Private MemoryRangeSize As Long
+Private mSessionId As String
 
 Private mhProcess As LongPtr
-
+Private mPageSize As Long
 
 Private Sub Class_Initialize()
   ReDim mMemoryRange(0 To &HF)
   MemoryRangeSize = LenB(mMemoryRange(0))
   mhProcess = GetCurrentProcess()
+  mSessionId = vbNullChar
+  mPageSize = &H1000
+End Sub
+
+Public Sub StartSession(SessionId As String)
+  If SessionId <> mSessionId Then
+    PurgeSessionData
+  End If
+  mSessionId = SessionId
+End Sub
+
+Public Sub EndSession()
+  PurgeSessionData
+  mSessionId = vbNullChar
+End Sub
+
+Private Sub PurgeSessionData()
+  mMemoryRangeCount = 0
+  ReDim mMemoryRange(0 To &HF)
 End Sub
 
 Private Function IsValidPointer(ByVal lpAddress As LongPtr) As Boolean
@@ -56,13 +74,14 @@ Private Function IsValidPointer(ByVal lpAddress As LongPtr) As Boolean
   
   Dim thisMemoryRange As MEMORY_BASIC_INFORMATION
   
-  If VirtualQueryEx(mhProcess, lpAddress, thisMemoryRange, MemoryRangeSize) Then
-    IsValidPointer = True
-  Else
-    IsValidPointer = False
+  If mSessionId = vbNullChar Then
+    If VirtualQueryEx(mhProcess, lpAddress, thisMemoryRange, MemoryRangeSize) Then
+      IsValidPointer = True
+    Else
+      IsValidPointer = False
+    End If
+    Exit Function
   End If
-  Exit Function
-  
   
   'Of course this doesn't take memory deallocations into account....
   For i = 0 To mMemoryRangeCount - 1
@@ -86,14 +105,27 @@ Private Function IsValidPointer(ByVal lpAddress As LongPtr) As Boolean
   End If
 End Function
 
-Public Sub FollowPointer(ByVal lpTarget As LongPtr, ByVal lpSource As LongPtr, ByVal size As Long)
+Public Sub FollowPointer(ByVal lpTarget As LongPtr, ByVal lpSource As LongPtr, ByVal size As Long, Optional ThrowOnSourceExceedsPageError As Boolean = True)
   If Not (IsValidPointer(lpSource)) Then
     Err.Raise INVALID_PROCEDURE_CALL_OR_ARGUMENT, "MemoryTool.FollowPointer", "The source pointer 0x" & Hex(lpSource) & " is not a valid pointer."
   ElseIf Not (IsValidPointer(lpTarget)) Then
     Err.Raise INVALID_PROCEDURE_CALL_OR_ARGUMENT, "MemoryTool.FollowPointer", "The target pointer 0x" & Hex(lpTarget) & " is not a valid pointer."
   Else
-    RtlMoveMemory ByVal lpTarget, lpSource, size
+    If ((lpTarget Mod mPageSize) + size) > mPageSize Then
+      If Not (IsValidPointer(lpTarget + size)) Then
+        Err.Raise INVALID_PROCEDURE_CALL_OR_ARGUMENT, "MemoryTool.FollowPointer", "The memory size 0x" & Hex(size) & " is invalid at address 0x" & Hex(lpTarget) & "."
+      End If
+    ElseIf ((lpSource Mod mPageSize) + size) > mPageSize Then
+      If Not (IsValidPointer(lpSource + size)) Then
+        If ThrowOnSourceExceedsPageError Then
+          Err.Raise INVALID_PROCEDURE_CALL_OR_ARGUMENT, "MemoryTool.FollowPointer", "The memory size 0x" & Hex(size) & " is invalid at address 0x" & Hex(lpSource) & "."
+        Else
+          size = mPageSize - CLng(lpSource Mod mPageSize)
+        End If
+      End If
+    End If
   End If
+  RtlMoveMemory ByVal lpTarget, lpSource, size
 End Sub
 
 

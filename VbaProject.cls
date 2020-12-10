@@ -6,7 +6,7 @@ Attribute VB_Name = "VbaProject"
 Attribute VB_GlobalNameSpace = False
 Attribute VB_Creatable = False
 Attribute VB_PredeclaredId = False
-Attribute VB_Exposed = True
+Attribute VB_Exposed = False
 Option Base 0
 Option Explicit
 
@@ -17,13 +17,12 @@ Private Type ProjectInfo
     lpD270 As LongPtr                          '   0x10    'Unknown
     lpObjectTable As LongPtr                   '   0x18
     FileNameDescriptor(0 To 5) As Byte         '   0x20
-    FileName(0 To 2044) As Byte                '   0x23
-    QWord2 As LongLong                         ' 0x0820
+    FileName(0 To 4090) As Byte                '   0x23
     lpE288 As LongPtr                          ' 0x0828    'Unknown
-    lpPublicObjectDescriptors As LongPtr       ' 0x0830    'Pointer to array of PODs themselves, not an array of pointers.
+    lpPublicObjectDescriptorArray As LongPtr   ' 0x0830    'Pointer to array of pointers to PODs themselves, not an array of PODs.
     ObjectCount As LongPtr                     ' 0x0838
     ObjectInfo1Array As LongPtr                ' 0x0840
-    QWord3 As LongLong                         ' 0x0848
+    QWord2 As LongLong                         ' 0x0848
 End Type
 
 Private Type ObjectTable
@@ -56,19 +55,26 @@ Private Type ObjectTable
     QWord9 As LongLong                         '   0xB8
 End Type
 
+Private mModuleNames As Scripting.Dictionary
+Private mModules() As IVbaObject
+Private mObjectsLoaded As Boolean
+
 Private mProjectInfo As ProjectInfo
 Private mObjectTable As ObjectTable
 Private mProjectInfoSize As Long
 Private mObjectTableSize As Long
 Private mProjectName As String
 Private mFileName As String
-Private mObjects As VbaObjects
+Private mObjects As IVbaObjects
 Private mOriginalAddress As LongPtr
+
+Private mWeakPointerToParent As LongPtr
 
 Private Const CLASS_NAME As String = "VbaProject"
 
-Implements ILoadedFromAddress
-Implements IMethodical
+Implements IVbaProject
+Implements IVbaObjects
+Implements IChildOfDisposable
 
 Private Sub Class_Initialize()
 Const METHOD_NAME As String = CLASS_NAME & ".Class_Initialize"
@@ -85,18 +91,30 @@ HandleError:
   End If
 End Sub
 
-
-#If Win64 Then
-  Private Sub ILoadedFromAddress_LoadFromAddress(ByVal lpAddress As LongLong, Optional Index As Long = 0)
-#Else
-  Private Sub ILoadedFromAddress_LoadFromAddress(ByVal lpAddress As Long, Optional Index As Long = 0)
-#End If
-Const METHOD_NAME As String = "ILoadedFromAddress_LoadFromAddress[" & CLASS_NAME & "]"
+Public Sub Setup(lpProjectInfo As LongPtr, Optional Parent As IVbaProjects = Nothing)
+Const METHOD_NAME As String = CLASS_NAME & ".Setup"
 On Error GoTo HandleError
   ' Do not expose this to the main class interface
-  mOriginalAddress = lpAddress
-  Call LoadProjectInfo(lpAddress)
+  mOriginalAddress = lpProjectInfo
+  Set Me.ChildOfDisposable.Parent = Parent
+  Call LoadProjectInfo(lpProjectInfo)
+  Call LoadObjectTable(mProjectInfo.lpObjectTable)
+  Call LoadObjects
 Exit Sub
+HandleError:
+  If Err.Source <> METHOD_NAME Then
+    Err.Raise Err.Number, METHOD_NAME & "." & Err.Source, Err.Description, Err.HelpFile, Err.HelpContext
+  Else
+    Err.Raise Err.Number, Err.Source, Err.Description, Err.HelpFile, Err.HelpContext
+  End If
+End Sub
+
+Private Sub LoadObjectTable(lpObjectTable As LongPtr)
+  Const METHOD_NAME = CLASS_NAME & ".LoadObjectTable"
+  On Error GoTo HandleError
+  Memory.FollowPointer VarPtr(mObjectTable), lpObjectTable, mObjectTableSize
+Exit Sub
+
 HandleError:
   If Err.Source <> METHOD_NAME Then
     Err.Raise Err.Number, METHOD_NAME & "." & Err.Source, Err.Description, Err.HelpFile, Err.HelpContext
@@ -112,11 +130,10 @@ Private Sub LoadProjectInfo(ByVal lpProjectInfo As LongPtr)
   On Error GoTo HandleError
   errorMessage = "Invalid lpProjectInfo."
   Memory.FollowPointer VarPtr(mProjectInfo), lpProjectInfo, mProjectInfoSize
-  Set mObjects = New VbaObjects
   errorMessage = "Invalid lpProjectInfo (bad lpObjectTable)."
-  Call ObjectLoader.LoadFromAddress(mProjectInfo.lpObjectTable)
+  LoadObjectTable mProjectInfo.lpObjectTable
   errorMessage = "Invalid ObjectTable (lpProjectInfo mismatch)."
-  If lpProjectInfo <> ObjectData.lpProjectInfo Then
+  If lpProjectInfo <> mObjectTable.lpProjectInfo Then
     Err.Raise INVALID_PROCEDURE_CALL_OR_ARGUMENT
   End If
 Exit Sub
@@ -129,10 +146,65 @@ HandleError:
   End If
 End Sub
 
-Private Property Get ObjectLoader() As ILoadedFromAddress
-Const METHOD_NAME As String = CLASS_NAME & ".get_ObjectLoader"
-On Error GoTo HandleError
-  Set ObjectLoader = mObjects
+Private Sub LoadObjects()
+  Const METHOD_NAME As String = CLASS_NAME & ".LoadObjects"
+  On Error GoTo HandleError
+  Dim i As Long
+  Dim Count As Long
+  Count = Me.Objects.Count
+  If Count > 0 Then
+    ReDim mModules(0 To Count - 1)
+    If mModuleNames Is Nothing Then
+      Set mModuleNames = New Scripting.Dictionary
+      mModuleNames.CompareMode = TextCompare
+    Else
+      mModuleNames.RemoveAll
+    End If
+  Else
+    Erase mModules
+    Exit Sub
+  End If
+  For i = 0 To Objects.Count - 1
+    Set mModules(i) = PrivateFactory.CreateVbaObject(mObjectTable.lpPublicObjectDescriptors, i)
+    mModuleNames.Add mModules(i).Name, i
+  Next
+  mObjectsLoaded = True
+Exit Sub
+
+HandleError:
+  If Err.Source <> METHOD_NAME Then
+    Err.Raise Err.Number, METHOD_NAME & "." & Err.Source, Err.Description, Err.HelpFile, Err.HelpContext
+  Else
+    Err.Raise Err.Number, Err.Source, Err.Description, Err.HelpFile, Err.HelpContext
+  End If
+End Sub
+
+Public Property Get Objects() As IVbaObjects
+  Const METHOD_NAME As String = CLASS_NAME & ".get_Objects"
+  On Error GoTo HandleError
+  Set Objects = IVbaProject_Objects
+Exit Sub
+
+HandleError:
+  If Err.Source <> METHOD_NAME Then
+    Err.Raise Err.Number, METHOD_NAME & "." & Err.Source, Err.Description, Err.HelpFile, Err.HelpContext
+  Else
+    Err.Raise Err.Number, Err.Source, Err.Description, Err.HelpFile, Err.HelpContext
+  End If
+End Property
+
+Private Sub IChildOfDisposable_DisposeOfParent()
+  Set IChildOfDisposable_Parent = Nothing
+End Sub
+
+Private Property Set IChildOfDisposable_Parent(Value As Object)
+  mWeakPointerToParent = ObjPtr(Value)
+End Property
+
+Private Property Get IVbaObjects_Count() As Long
+  Const METHOD_NAME = "IVbaObjects_Count[" & CLASS_NAME & "]"
+  On Error GoTo HandleError
+  IVbaObjects_Count = mObjectTable.ObjectCount
 Exit Property
 
 HandleError:
@@ -143,10 +215,37 @@ HandleError:
   End If
 End Property
 
-Private Property Get ObjectData() As IObjectTableData
-Const METHOD_NAME As String = CLASS_NAME & ".get_ObjectData"
-On Error GoTo HandleError
-  Set ObjectData = mObjects
+
+Private Property Get IVbaObjects_Item(Index As Variant) As IVbaObject
+  Dim moduleName As String
+  Const METHOD_NAME = "IVbaObjects_Item[" & CLASS_NAME & "]"
+  On Error GoTo HandleError
+  Dim dwIndex As Long
+  If IsNull(Index) Then
+    Err.Raise 94, METHOD_NAME
+  End If
+  If Not mObjectsLoaded Then Call LoadObjects
+  
+  If IsNumeric(Index) Then
+    dwIndex = CLng(Index)
+'    Set IVbaObjects_Item = PrivateFactory.CreateVbaObject(mObjectTable.lpPublicObjectDescriptors, dwIndex)
+    If CLng(Index) < Me.Objects.Count And Index >= 0 Then
+      Set IVbaObjects_Item = mModules(Index)
+      Exit Property
+      'moduleName = mModuleNames(Index)
+    End If
+  Else
+    moduleName = CStr(Index)
+  End If
+  If mModuleNames.Exists(moduleName) Then
+    Set IVbaObjects_Item = mModules(mModuleNames(moduleName))
+    Exit Property
+  End If
+  If IsNumeric(Index) Then
+    Err.Raise 381, METHOD_NAME, "Invalid module specified: the zero-based identifier you specified (" & Index & ") does not exist."
+  Else
+    Err.Raise 381, METHOD_NAME, "Invalid module specified: the module name """ & Index & """ could not be found."
+  End If
 Exit Property
 
 HandleError:
@@ -157,13 +256,18 @@ HandleError:
   End If
 End Property
 
-Public Property Get FileName() As String
-Const METHOD_NAME As String = CLASS_NAME & ".get_FileName"
+
+Private Property Get IVbaObjects_Parent() As IVbaProject
+  Set IVbaObjects_Parent = Me
+End Property
+
+Private Property Get IVbaProject_FileName() As String
+  Const METHOD_NAME = "IVbaProject_FileName[" & CLASS_NAME & "]"
 On Error GoTo HandleError
   If mFileName = vbNullString Then
     mFileName = RTrimNull(CStr(mProjectInfo.FileName))
   End If
-  FileName = mFileName
+  IVbaProject_FileName = mFileName
 Exit Property
 
 HandleError:
@@ -174,10 +278,13 @@ HandleError:
   End If
 End Property
 
-Public Property Get Name() As String
-  Const METHOD_NAME As String = CLASS_NAME & ".get_Name"
+Private Property Get IVbaProject_Name() As String
+  Const METHOD_NAME = "IVbaProject_Name[" & CLASS_NAME & "]"
   On Error GoTo HandleError
-  Name = ObjectData.ProjectName
+  If mProjectName = vbNullString Then
+    mProjectName = GetProjectName()
+  End If
+  IVbaProject_Name = mProjectName
 Exit Property
 
 HandleError:
@@ -205,15 +312,10 @@ HandleError:
   End If
 End Function
 
-
-#If Win64 Then
-Private Property Get ILoadedFromAddress_OriginalAddress() As LongLong
-#Else
-Private Property Get ILoadedFromAddress_OriginalAddress() As Long
-#End If
-  Const METHOD_NAME As String = "ILoadedFromAddress_OriginalAddress[" & CLASS_NAME & "]"
+Private Property Get IVbaProject_Objects() As IVbaObjects
+  Const METHOD_NAME = "IVbaProject_Objects[" & CLASS_NAME & "]"
   On Error GoTo HandleError
-  ILoadedFromAddress_OriginalAddress = mOriginalAddress
+  Set IVbaProject_Objects = Me
 Exit Property
 
 HandleError:
@@ -224,54 +326,22 @@ HandleError:
   End If
 End Property
 
-#If Win64 Then
-Private Function IMethodical_GetAddressByName(CallName As String) As LongLong
-#Else
-Private Function IMethodical_GetAddressByName(CallName As String) As Long
-#End If
-  Const METHOD_NAME As String = "IMethodical_GetAddressByName[" & CLASS_NAME & "]"
-  On Error GoTo HandleError
-  IMethodical_GetAddressByName = Me.GetAddressByName(CallName)
-Exit Function
+Private Property Get IVbaProject_Parent() As IVbaProjects
+  If mWeakPointerToParent = 0 Then Exit Property
+  Set IVbaProject_Parent = PrivateFactory.GetObjectFromWeakPointer(mWeakPointerToParent)
+End Property
 
-HandleError:
-  If Err.Source <> METHOD_NAME Then
-    Err.Raise Err.Number, METHOD_NAME & "." & Err.Source, Err.Description, Err.HelpFile, Err.HelpContext
-  Else
-    Err.Raise Err.Number, Err.Source, Err.Description, Err.HelpFile, Err.HelpContext
-  End If
-End Function
-
-Public Function GetAddressByName(CallName As String) As LongPtr
-  ' If a three-part name is specified, verify that the first part _
-    matches this project name, then pass the next two parts down. _
-    If not, pass the arguments to VbaObjects as is.
-  Const METHOD_NAME As String = CLASS_NAME & ".GetAddressByName"
-  Dim firstPeriod As Long, lastPeriod As Long, callToPass As String
-  firstPeriod = VBA.InStr(1, CallName, ".", vbBinaryCompare)
-  If firstPeriod <= 0 Then
-    Err.Raise INVALID_PROCEDURE_CALL_OR_ARGUMENT, METHOD_NAME, "The module name must be specified in calls to GetAddressByName"
-    Exit Function
-  End If
-  lastPeriod = VBA.InStrRev(CallName, ".", -1, vbBinaryCompare)
-  If firstPeriod <> lastPeriod Then
-    If VBA.Left$(CallName, firstPeriod - 1) <> Me.Name Then
-      Err.Raise INVALID_PROCEDURE_CALL_OR_ARGUMENT, METHOD_NAME, "The specified call name to the object " & Me.Name & " was invalid (" & CallName & ").", Err.HelpFile, Err.HelpContext
-      Exit Function
+Private Sub Class_Terminate()
+  Dim i As Long
+  Dim DC As IChildOfDisposable
+  For i = 1 To IVbaObjects_Count
+    Set DC = mModules(i - 1)
+    If Not DC Is Nothing Then
+      DC.DisposeOfParent
     End If
-    callToPass = VBA.Mid$(CallName, firstPeriod + 1)
-  Else
-    callToPass = CallName
-  End If
-  On Error GoTo HandleError
-  GetAddressByName = mObjects.GetAddressByName(callToPass)
-  Exit Function
+  Next
+End Sub
 
-HandleError:
-  If Err.Source <> METHOD_NAME Then
-    Err.Raise Err.Number, METHOD_NAME & "." & Err.Source, Err.Description, Err.HelpFile, Err.HelpContext
-  Else
-    Err.Raise Err.Number, Err.Source, Err.Description, Err.HelpFile, Err.HelpContext
-  End If
-End Function
-
+Public Property Get ChildOfDisposable() As IChildOfDisposable
+  Set ChildOfDisposable = Me
+End Property
